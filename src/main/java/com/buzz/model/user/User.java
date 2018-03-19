@@ -3,6 +3,7 @@ package com.buzz.model.user;
 public class User {
     private Long id;
     private String username;
+    private String login_id;
     private String password;
     private String phone;
     private String address;
@@ -21,6 +22,14 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getLogin_id() {
+        return login_id;
+    }
+
+    public void setLogin_id(String login_id) {
+        this.login_id = login_id;
     }
 
     public String getPassword() {
@@ -56,6 +65,7 @@ public class User {
 
         if (id != null ? !id.equals(user.id) : user.id != null) return false;
         if (username != null ? !username.equals(user.username) : user.username != null) return false;
+        if (login_id != null ? !login_id.equals(user.login_id) : user.login_id != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (phone != null ? !phone.equals(user.phone) : user.phone != null) return false;
         return !(address != null ? !address.equals(user.address) : user.address != null);
@@ -66,6 +76,7 @@ public class User {
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (login_id != null ? login_id.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
@@ -77,6 +88,7 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
+                ", login_id='" + login_id + '\'' +
                 ", password='" + password + '\'' +
                 ", phone='" + phone + '\'' +
                 ", address='" + address + '\'' +

@@ -7,5 +7,7 @@ import java.util.List;
 public interface UserService {
     User get(Long id);
 
-    List<User> list(List<Long> ids);
+    List<User> getByIds(List<Long> ids);
+
+    Long insert(User user);
 }

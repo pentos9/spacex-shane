@@ -1,21 +1,32 @@
 package com.buzz.controller;
 
 import com.buzz.common.KeyGenerator;
+import com.buzz.mapper.UserMapper;
 import com.buzz.model.user.User;
 import com.buzz.service.UserService;
 import com.buzz.util.JsonUtil;
+import com.sun.javafx.binding.StringFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.Jedis;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class UserController {
 
+    private Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private Jedis jedis;
@@ -23,21 +34,58 @@ public class UserController {
     @RequestMapping("/user/{id}")
     @ResponseBody
     public User get(@PathVariable Long id) {
-        if (id != null) {
-            String key = KeyGenerator.generateKey(id);
-            String userJson = jedis.get(key);
 
-            if (userJson != null) {
-                User user = JsonUtil.fromJson(userJson, User.class);
-                return user;
-            }
+        if (id == null) {
+            return null;
+        }
 
-            User user = userService.get(id);
-            if (user != null) {
-                jedis.set(id.toString(), JsonUtil.toJson(user));
-            }
+        String key = KeyGenerator.generateKey(id);
+        String userJson = jedis.get(key);
+
+        if (userJson != null) {
+            User user = JsonUtil.fromJson(userJson, User.class);
             return user;
         }
-        return null;
+
+        User user = userService.get(id);
+        if (user != null) {
+            jedis.set(id.toString(), JsonUtil.toJson(user));
+        }
+
+        List<Long> userIds = new ArrayList<>();
+        userIds.add(id);
+        userIds.add(2L);
+        userIds.add(3L);
+        userIds.add(4L);
+
+        List<User> userList = userService.getByIds(userIds);
+
+        return user;
+
     }
+
+    @RequestMapping(value = "/user/mget", method = RequestMethod.POST)
+    @ResponseBody
+    public List<User> getByIds(@RequestBody List<Long> ids) {
+
+        if (CollectionUtils.isEmpty(ids)) {
+            return new ArrayList<>();
+        }
+
+        List<User> users = userService.getByIds(ids);
+
+        return users;
+    }
+
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
+    @ResponseBody
+    public User create(@RequestBody User user) {
+        Long id = userService.insert(user);
+        user = get(id);
+        logger.info(String.format("user:[%s]", user));
+
+        return user;
+
+    }
+
 }
