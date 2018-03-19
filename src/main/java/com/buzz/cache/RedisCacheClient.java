@@ -1,4 +1,4 @@
-package com.buzz.common;
+package com.buzz.cache;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

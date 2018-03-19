@@ -1,4 +1,4 @@
-package com.buzz.common;
+package com.buzz.cache;
 
 
 public class KeyGenerator {

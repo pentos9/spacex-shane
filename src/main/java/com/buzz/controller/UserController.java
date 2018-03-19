@@ -1,11 +1,10 @@
 package com.buzz.controller;
 
-import com.buzz.common.KeyGenerator;
+import com.buzz.cache.KeyGenerator;
 import com.buzz.mapper.UserMapper;
 import com.buzz.model.user.User;
 import com.buzz.service.UserService;
 import com.buzz.util.JsonUtil;
-import com.sun.javafx.binding.StringFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
