@@ -30,6 +30,14 @@ public interface TokenManager {
     TokenModel getToken(String authentication);
 
     /**
+     * 根据用户ID获取Token
+     *
+     * @param userId
+     * @return
+     */
+    String getTokenByUserId(long userId);
+
+    /**
      * 清楚Token
      *
      * @param userId

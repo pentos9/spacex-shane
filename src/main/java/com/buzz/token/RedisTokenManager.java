@@ -2,6 +2,8 @@ package com.buzz.token;
 
 import com.buzz.constants.Constants;
 
+import com.buzz.util.JsonUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
@@ -15,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 public class RedisTokenManager implements TokenManager {
 
     @Autowired
-    private RedisTemplate<Long, String> redisClient;
+    private RedisTemplate<String, String> redisClient;
 
 //    @Autowired
 //    public void setRedisClient(RedisTemplate redisClient) {
@@ -27,7 +29,7 @@ public class RedisTokenManager implements TokenManager {
     public TokenModel createToken(long userId) {
         String token = UUID.randomUUID().toString().replace("-", "");
         TokenModel model = new TokenModel(userId, token);
-        redisClient.boundValueOps(userId).set(token, Constants.TOKEN_EXPIRES_HOUR, TimeUnit.HOURS);
+        redisClient.boundValueOps(Long.toString(userId)).set(token, Constants.TOKEN_EXPIRES_HOUR, TimeUnit.HOURS);
         return model;
     }
 
@@ -37,14 +39,15 @@ public class RedisTokenManager implements TokenManager {
             return false;
         }
 
-        String token = redisClient.boundValueOps(tokenModel.getUserId()).get();
+        String token = redisClient.boundValueOps(Long.toString(tokenModel.getUserId())).get();
         if (token == null || !token.equals(tokenModel.getToken())) {
             return false;
         }
 
-        redisClient.boundValueOps(tokenModel.getUserId()).expire(Constants.TOKEN_EXPIRES_HOUR, TimeUnit.HOURS);
+        redisClient.boundValueOps(Long.toString(tokenModel.getUserId())).expire(Constants.TOKEN_EXPIRES_HOUR, TimeUnit.HOURS);
         return false;
     }
+
 
     @Override
     public TokenModel getToken(String authentication) {
@@ -63,8 +66,14 @@ public class RedisTokenManager implements TokenManager {
     }
 
     @Override
+    public String getTokenByUserId(long userId) {
+        String token = redisClient.boundValueOps(Long.toString(userId)).get();
+        return token;
+    }
+
+    @Override
     public boolean deleteToken(long userId) {
-        redisClient.delete(userId);
+        redisClient.delete(Long.toString(userId));
         return true;
     }
 }

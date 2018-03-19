@@ -32,6 +32,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getByLoginId(String loginId) {
+        User user = userMapper.getByLoginId(loginId);
+        return user;
+    }
+
+    @Override
     public Long insert(User user) {
         Long effectRows = userMapper.insert(user);
         Long id = user.getId();

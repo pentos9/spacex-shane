@@ -9,5 +9,7 @@ public interface UserService {
 
     List<User> getByIds(List<Long> ids);
 
+    User getByLoginId(String LoginId);
+
     Long insert(User user);
 }

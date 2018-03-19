@@ -14,7 +14,10 @@ public interface UserMapper {
     @SelectProvider(type = UserProvider.class, method = "getByIds")
     List<User> getByIds(@Param("ids") List<Long> ids);
 
-    @Insert("INSERT INTO user(username,login_id, password,phone,address) VALUES(#{user.username}, #{user.login_id}, #{user.phone}, #{user.password}, #{user.address})")
+    @Select("SELECT * FROM user WHERE login_id = #{loginId}")
+    User getByLoginId(@Param("loginId") String loginId);
+
+    @Insert("INSERT INTO user(username,login_id, password,phone,address) VALUES(#{user.username}, #{user.login_id}, #{user.password}, #{user.phone}, #{user.address})")
     @Options(useGeneratedKeys = true, keyProperty = "user.id")
     Long insert(@Param("user") User user);
 }

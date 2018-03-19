@@ -5,47 +5,79 @@ import com.buzz.constants.ResultStatus;
 import com.buzz.model.ResultModel;
 import com.buzz.model.user.User;
 import com.buzz.repository.UserRepository;
+import com.buzz.service.UserService;
 import com.buzz.token.TokenManager;
 import com.buzz.token.TokenModel;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/tokens")
 public class UserLoginController {
-    //@Autowired
-    private UserRepository userRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(UserLoginController.class);
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private TokenManager tokenManager;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<ResultModel> login(@RequestParam String username, @RequestParam String password) {
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultModel login(@RequestParam String loginId, @RequestParam String password) {
 
-        Assert.notNull(username, "username can not be null");
+        Assert.notNull(loginId, "loginId can not be null");
         Assert.notNull(password, "password can not be null");
 
-        User user = userRepository.findByUsername(username);
+        User user = userService.getByLoginId(loginId);
 
         if (user == null || //user not exist
-                "".equals(password)) { // password error
-            return new ResponseEntity<ResultModel>(ResultModel.ok(ResultStatus.USERNAME_OR_PASSWORD_ERROR), HttpStatus.NOT_FOUND);
+                !password.equals(user.getPassword())) { // password error
+            return ResultModel.ok(ResultStatus.USERNAME_OR_PASSWORD_ERROR);
         }
 
         TokenModel model = tokenManager.createToken(user.getId());
-        return new ResponseEntity<ResultModel>(ResultModel.ok(model), HttpStatus.OK);
+        return ResultModel.ok(model);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE)
-    @Authorization
-    public ResponseEntity<ResultModel> logout(@RequestParam("userId") long userId) {
-        tokenManager.deleteToken(userId);
-        return new ResponseEntity<ResultModel>(ResultModel.ok(ResultModel.ok()), HttpStatus.OK);
+    @RequestMapping(value = "/isLogin", method = RequestMethod.POST)
+    @ResponseBody
+    public boolean isLogin(@RequestParam String loginId) {
+
+        Assert.notNull(loginId);
+        User user = userService.getByLoginId(loginId);
+
+        boolean isLogin = false;
+        if (user != null) {
+            String token = tokenManager.getTokenByUserId(user.getId());
+            if (StringUtils.isNotBlank(token)) {
+                isLogin = true;
+            }
+        }
+
+        logger.info(String.format("isLogin:[%s]", isLogin));
+
+        return isLogin;
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResultModel logout(@RequestParam String loginId) {
+        Assert.notNull(loginId, "loginId can not be null");
+
+        User user = userService.getByLoginId(loginId);
+
+        if (user != null) {
+            boolean result = tokenManager.deleteToken(user.getId());
+            logger.info(String.format("logout result:[%s]", result));
+        }
+
+        return ResultModel.ok();
     }
 }
