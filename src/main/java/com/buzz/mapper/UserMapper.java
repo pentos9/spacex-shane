@@ -20,4 +20,7 @@ public interface UserMapper {
     @Insert("INSERT INTO user(username,login_id, password,phone,address) VALUES(#{user.username}, #{user.login_id}, #{user.password}, #{user.phone}, #{user.address})")
     @Options(useGeneratedKeys = true, keyProperty = "user.id")
     Long insert(@Param("user") User user);
+
+    @Update("UPDATE user set username = #{user.username},password = #{user.password},phone = #{user.phone},address = #{user.address} where id = #{user.id}")
+    Long update(@Param("user") User user);
 }

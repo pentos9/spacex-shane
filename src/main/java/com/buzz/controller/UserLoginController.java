@@ -1,10 +1,9 @@
 package com.buzz.controller;
 
-import com.buzz.authorization.annotation.Authorization;
+import com.buzz.api.UserCreate;
 import com.buzz.constants.ResultStatus;
 import com.buzz.model.ResultModel;
 import com.buzz.model.user.User;
-import com.buzz.repository.UserRepository;
 import com.buzz.service.UserService;
 import com.buzz.token.TokenManager;
 import com.buzz.token.TokenModel;
@@ -12,8 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +24,38 @@ public class UserLoginController {
 
     @Autowired
     private TokenManager tokenManager;
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @ResponseBody
+    public boolean register(@RequestBody UserCreate userCreate) {
+        Assert.notNull(userCreate, "user can not be null");
+
+        Assert.notNull(userCreate.getUsername(), "username can not be null");
+        Assert.notNull(userCreate.getPassword(), "password can not be null");
+        Assert.notNull(userCreate.getLogin_id(), "login_id can not be null");
+        Assert.notNull(userCreate.getPhone(), "phone can not be null");
+        Assert.notNull(userCreate.getAddress(), "address can not be null");
+
+
+        User user = new User();
+        user.setUsername(userCreate.getUsername());
+        user.setPassword(userCreate.getPassword());
+        user.setPhone(userCreate.getPhone());
+        user.setAddress(userCreate.getAddress());
+        user.setLogin_id(userCreate.getLogin_id());
+
+        boolean result = true;
+
+        try {
+            Long userId = userService.insert(user);
+            logger.info(String.format("userId:[%s]", userId));
+        } catch (Exception e) {
+            logger.info(String.format("exception:[%s]", e));
+            result = false;
+        }
+
+        return result;
+    }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
@@ -42,7 +71,7 @@ public class UserLoginController {
             return ResultModel.ok(ResultStatus.USERNAME_OR_PASSWORD_ERROR);
         }
 
-        TokenModel model = tokenManager.createToken(user.getId());
+        TokenModel model = tokenManager.setToken(user.getId());
         return ResultModel.ok(model);
     }
 

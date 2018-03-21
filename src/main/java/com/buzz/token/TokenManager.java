@@ -10,7 +10,7 @@ public interface TokenManager {
      * @param userId
      * @return
      */
-    TokenModel createToken(long userId);
+    TokenModel setToken(long userId);
 
 
     /**

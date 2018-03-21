@@ -44,4 +44,19 @@ public class UserServiceImpl implements UserService {
         logger.info(String.format("effectRows:[%d],id:[%d]", effectRows, id));
         return id;
     }
+
+    @Override
+    public boolean update(User user) {
+        long effectRows = userMapper.update(user);
+
+        logger.info(String.format("effectRows:[%d]", effectRows));
+        return effectRows > 0;
+    }
+
+    @Override
+    public boolean delete(Long id) {
+        return true;
+    }
+
+
 }

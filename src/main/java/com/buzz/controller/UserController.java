@@ -87,4 +87,13 @@ public class UserController {
 
     }
 
+    @RequestMapping(value = "/user", method = RequestMethod.PUT)
+    @ResponseBody
+    public User update(@RequestBody User userUpdate) {
+        boolean result = userService.update(userUpdate);
+        User user = userService.get(userUpdate.getId());
+
+        return user;
+    }
+
 }

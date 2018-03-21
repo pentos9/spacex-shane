@@ -19,17 +19,11 @@ public class RedisTokenManager implements TokenManager {
     @Autowired
     private RedisTemplate<String, String> redisClient;
 
-//    @Autowired
-//    public void setRedisClient(RedisTemplate redisClient) {
-//        this.redisClient = redisClient;
-//        redisClient.setKeySerializer(new JdkSerializationRedisSerializer());
-//    }
-
     @Override
-    public TokenModel createToken(long userId) {
+    public TokenModel setToken(long userId) {
         String token = UUID.randomUUID().toString().replace("-", "");
         TokenModel model = new TokenModel(userId, token);
-        redisClient.boundValueOps(Long.toString(userId)).set(token, Constants.TOKEN_EXPIRES_HOUR, TimeUnit.HOURS);
+        redisClient.boundValueOps(Long.toString(userId)).set(token, Constants.TOKEN_EXPIRES_MINUTE, TimeUnit.MINUTES);
         return model;
     }
 

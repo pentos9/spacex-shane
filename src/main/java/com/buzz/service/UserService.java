@@ -12,4 +12,8 @@ public interface UserService {
     User getByLoginId(String LoginId);
 
     Long insert(User user);
+
+    boolean update(User user);
+
+    boolean delete(Long id);
 }

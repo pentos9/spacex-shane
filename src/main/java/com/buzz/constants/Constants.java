@@ -16,7 +16,14 @@ public class Constants {
     public static final int TOKEN_EXPIRES_HOUR = 72;
 
     /**
+     * token 有效时间(分钟)
+     */
+    public static final int TOKEN_EXPIRES_MINUTE = 30;
+
+    /**
      * 存放Authorization 的header字段
      */
     public static final String AUTHORISATION = "authorization";
+
+    public static final String TWEET_PREFIX = "tweet:like:";
 }
