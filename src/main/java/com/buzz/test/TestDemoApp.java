@@ -39,6 +39,9 @@ public class TestDemoApp {
 
         run();
 
+
+        Class clazz = String.class;
+
     }
 
     public static void run() {
