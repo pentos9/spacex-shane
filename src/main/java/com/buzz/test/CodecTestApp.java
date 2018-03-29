@@ -25,6 +25,8 @@ public class CodecTestApp {
 
         String base64Decode = codecUtil.base64Decode(base64Encode);
 
+        String randomPassword = codecUtil.generateRandomPassword(18);
+
         logger.info(String.format("md5Hex:[%s]", md5Hex));
         logger.info(String.format("sha1Hex:[%s]", sha1Hex));
         logger.info(String.format("sha256Hex:[%s]", sha256Hex));
@@ -32,6 +34,7 @@ public class CodecTestApp {
         logger.info(String.format("base64Encode:[%s]", base64Encode));
         logger.info(String.format("base64Decode:[%s]", base64Decode));
 
+        logger.info(String.format("randomPassword:[%s]", randomPassword));
 
     }
 }
