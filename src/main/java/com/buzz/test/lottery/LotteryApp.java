@@ -31,7 +31,7 @@ public class LotteryApp {
         prizeLevels.forEach(prizeLevel -> {
             Collection<Participant> winners = lottery(prizeLevel, participants, prizeLevel.getNumberOfWinner());
             listWinner(prizeLevel, winners);
-            CollectionUtils.removeAll(participants, winners);
+            participants = CollectionUtils.removeAll(participants, winners);
         });
 
     }
