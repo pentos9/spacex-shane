@@ -21,21 +21,12 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.4.2.RELEASE</version>
     </parent>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
-        <!--<dependency>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-starter-actuator</artifactId>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-starter-security</artifactId>-->
-        <!--</dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -54,24 +45,6 @@
             <version>5.1.41</version>
         </dependency>
 
-        <!--<dependency>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-starter-jdbc</artifactId>-->
-        <!--<exclusions>-->
-        <!--<exclusion>-->
-        <!--<groupId>org.apache.tomcat</groupId>-->
-        <!--<artifactId>tomcat-jdbc</artifactId>-->
-        <!--</exclusion>-->
-        <!--</exclusions>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-        <!--<groupId>com.zaxxer</groupId>-->
-        <!--<artifactId>HikariCP</artifactId>-->
-        <!--<version>2.6.1</version>-->
-        <!--<scope>compile</scope>-->
-        <!--</dependency>-->
-
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -83,6 +56,13 @@
             <artifactId>commons-collections4</artifactId>
             <version>4.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.9</version>
+        </dependency>
+
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -99,7 +79,7 @@
 
         <dependency>
             <groupId>javax.servlet.jsp</groupId>
-            <artifactId>jsp.api</artifactId>
+            <artifactId>jsp-api</artifactId>
             <version>2.2</version>
         </dependency>
 
@@ -121,6 +101,8 @@
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
         </dependency>
+
+
     </dependencies>
 
     <dependencyManagement>
