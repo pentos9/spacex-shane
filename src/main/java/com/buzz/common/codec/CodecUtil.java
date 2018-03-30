@@ -44,18 +44,18 @@ public class CodecUtil implements ICodecUtil {
         return salt;
     }
 
-    private String getCharSet() {
+    public String getCharSet() {
         StringBuilder sb = new StringBuilder();
 
-        for (int ch = '0'; ch < '9'; ch++) {
-            sb.append(ch);
-        }
-
-        for (int ch = 'A'; ch < 'Z'; ch++) {
+        for (int ch = '0'; ch <= '9'; ch++) {
             sb.append((char) ch);
         }
 
-        for (int ch = 'a'; ch < 'z'; ch++) {
+        for (int ch = 'A'; ch <= 'Z'; ch++) {
+            sb.append((char) ch);
+        }
+
+        for (int ch = 'a'; ch <= 'z'; ch++) {
             sb.append((char) ch);
         }
 
@@ -70,9 +70,9 @@ public class CodecUtil implements ICodecUtil {
         }
 
         StringBuilder sb = new StringBuilder();
-        int size = characters.size();
-        while (size != 0) {
-            Character ch = characters.remove(random.nextInt(size));
+
+        while (characters.size() != 0) {
+            Character ch = characters.remove(random.nextInt(characters.size()));
             sb.append(ch);
         }
 
