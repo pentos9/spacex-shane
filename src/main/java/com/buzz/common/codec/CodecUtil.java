@@ -44,7 +44,7 @@ public class CodecUtil implements ICodecUtil {
         return salt;
     }
 
-    public String getCharSet() {
+    private String getCharSet() {
         StringBuilder sb = new StringBuilder();
 
         for (int ch = '0'; ch <= '9'; ch++) {

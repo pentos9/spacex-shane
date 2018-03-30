@@ -45,8 +45,6 @@ public class CodecTestApp {
 
         logger.info(String.format("randomPassword:[%s]", randomPassword));
 
-        print(codecUtil.getCharSet().toCharArray());
-
     }
 
     public void print(char[] charArray) {
