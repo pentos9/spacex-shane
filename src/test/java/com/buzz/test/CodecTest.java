@@ -9,12 +9,20 @@ import org.junit.Test;
 
 public class CodecTest {
 
+    private CodecUtil codecUtil = new CodecUtil();
+
     @Test
     public void testBase64() {
         String data = "Der letzte Mohikaner";
-        CodecUtil codecUtil = new CodecUtil();
         String md5hex = codecUtil.md5Hex(data);
         PrintUtil.print(md5hex);
         Assert.assertTrue(StringUtils.isNoneBlank(md5hex));
+    }
+
+    @Test
+    public void testGenerateRandomPassword() {
+        int length = 20;
+        String password = codecUtil.generateRandomPassword(length);
+        Assert.assertTrue(password.length() == length);
     }
 }
