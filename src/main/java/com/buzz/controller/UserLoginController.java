@@ -1,16 +1,18 @@
 package com.buzz.controller;
 
 import com.buzz.api.UserCreate;
-import com.buzz.constants.ResultStatus;
-import com.buzz.model.ResultModel;
+import com.buzz.common.codec.CodecUtil;
+import com.buzz.model.JsonResult;
 import com.buzz.model.user.User;
 import com.buzz.service.UserService;
 import com.buzz.token.TokenManager;
 import com.buzz.token.TokenModel;
+import com.buzz.util.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,11 +25,14 @@ public class UserLoginController {
     private UserService userService;
 
     @Autowired
+    private CodecUtil codecUtil;
+
+    @Autowired
     private TokenManager tokenManager;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
-    public boolean register(@RequestBody UserCreate userCreate) {
+    public JsonResult register(@RequestBody UserCreate userCreate) {
         Assert.notNull(userCreate, "user can not be null");
 
         Assert.notNull(userCreate.getUsername(), "username can not be null");
@@ -44,35 +49,43 @@ public class UserLoginController {
         user.setAddress(userCreate.getAddress());
         user.setLogin_id(userCreate.getLogin_id());
 
-        boolean result = true;
+        String passwordMD5 = codecUtil.md5Hex(userCreate.getPassword());
+        user.setPassword(passwordMD5);
 
-        try {
-            Long userId = userService.insert(user);
-            logger.info(String.format("userId:[%s]", userId));
-        } catch (Exception e) {
-            logger.info(String.format("exception:[%s]", e));
-            result = false;
+
+        User dbUser = userService.getByLoginId(userCreate.getLogin_id());
+        if (dbUser != null) {
+            return new JsonResult(false, "注册失败，用户名已经被占用", "");
         }
 
-        return result;
+        Long userId = userService.insert(user);
+        userCreate.setId(userId);
+        logger.info(String.format("userId:[%s]", userId));
+
+        return new JsonResult(true, "注册成功！", JsonUtil.toJson(userCreate));
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public ResultModel login(@RequestParam String loginId, @RequestParam String password) {
+    public JsonResult login(@RequestParam String loginId, @RequestParam String password) {
 
         Assert.notNull(loginId, "loginId can not be null");
         Assert.notNull(password, "password can not be null");
 
         User user = userService.getByLoginId(loginId);
+        String passwordMD5 = codecUtil.md5Hex(password);
 
-        if (user == null || //user not exist
-                !password.equals(user.getPassword())) { // password error
-            return ResultModel.ok(ResultStatus.USERNAME_OR_PASSWORD_ERROR);
+
+        if (user == null) {
+            return new JsonResult(false, "登录失败，用户不存在", "");
+        }
+
+        if (!passwordMD5.equals(user.getPassword())) {
+            return new JsonResult(false, "登录失败，用户名或者密码不正确", "");
         }
 
         TokenModel model = tokenManager.setToken(user.getId());
-        return ResultModel.ok(model);
+        return new JsonResult(true, "登录成功！", "");
     }
 
     @RequestMapping(value = "/isLogin", method = RequestMethod.POST)
@@ -97,7 +110,7 @@ public class UserLoginController {
 
     @RequestMapping(value = "/logout", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResultModel logout(@RequestParam String loginId) {
+    public JsonResult logout(@RequestParam String loginId) {
         Assert.notNull(loginId, "loginId can not be null");
 
         User user = userService.getByLoginId(loginId);
@@ -107,6 +120,6 @@ public class UserLoginController {
             logger.info(String.format("logout result:[%s]", result));
         }
 
-        return ResultModel.ok();
+        return new JsonResult(true, "退出成功！", "");
     }
 }

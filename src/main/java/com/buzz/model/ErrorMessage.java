@@ -4,20 +4,30 @@ package com.buzz.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ErrorMessage {
+    private String errmsg;
+    private String errcode;
 
-    @JsonProperty("message")
-    private String message;
-
-    public ErrorMessage(String message) {
-        this.message = message;
+    public ErrorMessage() {
     }
 
-    public String getMessage() {
-        return message;
+    public ErrorMessage(String errmsg, String errcode) {
+        this.errmsg = errmsg;
+        this.errcode = errcode;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public String getErrmsg() {
+        return errmsg;
     }
 
+    public void setErrmsg(String errmsg) {
+        this.errmsg = errmsg;
+    }
+
+    public String getErrcode() {
+        return errcode;
+    }
+
+    public void setErrcode(String errcode) {
+        this.errcode = errcode;
+    }
 }
