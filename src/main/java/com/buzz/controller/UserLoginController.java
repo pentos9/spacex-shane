@@ -12,7 +12,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,23 +41,12 @@ public class UserLoginController {
         Assert.notNull(userCreate.getAddress(), "address can not be null");
 
 
-        User user = new User();
-        user.setUsername(userCreate.getUsername());
-        user.setPassword(userCreate.getPassword());
-        user.setPhone(userCreate.getPhone());
-        user.setAddress(userCreate.getAddress());
-        user.setLogin_id(userCreate.getLogin_id());
-
-        String passwordMD5 = codecUtil.md5Hex(userCreate.getPassword());
-        user.setPassword(passwordMD5);
-
-
         User dbUser = userService.getByLoginId(userCreate.getLogin_id());
         if (dbUser != null) {
             return new JsonResult(false, "注册失败，用户名已经被占用", "");
         }
 
-        Long userId = userService.insert(user);
+        Long userId = userService.create(userCreate);
         userCreate.setId(userId);
         logger.info(String.format("userId:[%s]", userId));
 
