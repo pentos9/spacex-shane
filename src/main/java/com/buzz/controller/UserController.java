@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping(("user"))
+@RequestMapping("user")
 public class UserController extends BaseController {
 
     private Logger logger = LoggerFactory.getLogger(UserController.class);
