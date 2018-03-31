@@ -29,9 +29,6 @@ public class UserController extends BaseController {
     private UserService userService;
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private Jedis jedis;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
