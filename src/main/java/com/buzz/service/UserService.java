@@ -1,5 +1,6 @@
 package com.buzz.service;
 
+import com.buzz.api.UserCreate;
 import com.buzz.model.user.User;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface UserService {
 
     User getByLoginId(String LoginId);
 
-    Long insert(User user);
+    Long create(UserCreate user);
 
     boolean update(User user);
 

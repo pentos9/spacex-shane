@@ -3,9 +3,12 @@ package com.buzz.common.codec;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+
+@Component
 public class CodecUtil implements ICodecUtil {
 
     private static final Random random = new Random();

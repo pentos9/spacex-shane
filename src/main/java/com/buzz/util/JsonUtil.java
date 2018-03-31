@@ -29,7 +29,7 @@ public class JsonUtil {
         try {
             pojo = OBJECT_MAPPER.readValue(json, type);
         } catch (IOException e) {
-            LOGGER.error("convert JSON to POJO failure", e);
+            LOGGER.error(String.format("convert JSON to POJO failure,Error Json:%s", json));
             throw new RuntimeException(e);
         }
 

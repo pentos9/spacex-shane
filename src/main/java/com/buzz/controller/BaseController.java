@@ -46,7 +46,7 @@ public abstract class BaseController {
     }
 
     public ResponseEntity<ErrorMessage> getErrorResponse(String message, HttpStatus status) {
-        return new ResponseEntity<ErrorMessage>(new ErrorMessage(message),
+        return new ResponseEntity<ErrorMessage>(new ErrorMessage(message, status.toString()),
                 status);
     }
 }

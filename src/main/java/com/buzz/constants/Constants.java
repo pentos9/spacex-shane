@@ -1,8 +1,6 @@
 package com.buzz.constants;
 
-/**
- * Created by lucas on 3/2/18.
- */
+
 public class Constants {
 
     /**
@@ -25,5 +23,11 @@ public class Constants {
      */
     public static final String AUTHORISATION = "authorization";
 
+    /**
+     * 点赞的key前缀
+     */
     public static final String TWEET_PREFIX = "tweet:like:";
+
+    public static final Long ZERO = 0L;
+
 }
