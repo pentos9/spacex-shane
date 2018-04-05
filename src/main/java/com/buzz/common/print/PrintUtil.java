@@ -1,6 +1,8 @@
 package com.buzz.common.print;
 
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.PrintStream;
 import java.util.Collection;
 import java.util.Map;
@@ -24,7 +26,7 @@ public class PrintUtil {
     }
 
     public static <T> void print(String title, T[] array, boolean isAddNextLine) {
-        out.println(descriptor + title + descriptor);
+        printTitle(title);
 
         StringBuilder sb = new StringBuilder();
         for (T t : array) {
@@ -42,7 +44,7 @@ public class PrintUtil {
     }
 
     public static <T> void print(String title, Collection<T> collection, boolean isAddNextLines) {
-        out.println(descriptor + title + descriptor);
+        printTitle(title);
         collection.forEach(item -> {
             System.out.print(item + "\t");
         });
@@ -57,7 +59,7 @@ public class PrintUtil {
     }
 
     public static <K, V> void print(String title, Map<K, V> map, boolean isAddNextLine) {
-        out.println(descriptor + title + descriptor);
+        printTitle(title);
         StringBuilder sb = new StringBuilder();
         sb.append("{");
         map.forEach((key, value) -> {
@@ -82,6 +84,13 @@ public class PrintUtil {
         for (int time = 0; time < count; time++) {
             out.println();
         }
+    }
+
+    private static void printTitle(String title) {
+        if (StringUtils.isEmpty(title)) {
+            return;
+        }
+        out.println(descriptor + title + descriptor);
     }
 
 }
