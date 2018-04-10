@@ -1,0 +1,14 @@
+package com.buzz.test.pattern.behavioral.demand;
+
+public class Invoker {
+
+    private Command command;
+
+    public Invoker(Command command) {
+        this.command = command;
+    }
+
+    public void action() {
+        command.execute();
+    }
+}
