@@ -7,6 +7,7 @@ import com.buzz.mapper.UserMapper;
 import com.buzz.model.user.User;
 import com.buzz.service.UserService;
 import com.buzz.util.JsonUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import redis.clients.jedis.Jedis;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("user")
 public class UserController extends BaseController {
 
@@ -32,7 +33,6 @@ public class UserController extends BaseController {
     private Jedis jedis;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseBody
     public User get(@PathVariable Long id) {
 
         if (id == null) {
@@ -43,7 +43,7 @@ public class UserController extends BaseController {
 
         String userJson = jedis.get(key);
 
-        if (userJson != null) {
+        if (StringUtils.isNotBlank(userJson)) {
             User user = JsonUtil.fromJson(userJson, User.class);
             if (user != null) {
                 return user;
@@ -60,7 +60,6 @@ public class UserController extends BaseController {
     }
 
     @RequestMapping(value = "/mget", method = RequestMethod.POST)
-    @ResponseBody
     public List<User> getByIds(@RequestBody List<Long> ids) {
 
         if (CollectionUtils.isEmpty(ids)) {
@@ -74,7 +73,6 @@ public class UserController extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
     public Long create(@RequestBody UserCreate user) {
 
         User dbUser = userService.getByLoginId(user.getLogin_id());
@@ -89,7 +87,6 @@ public class UserController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.PUT)
-    @ResponseBody
     public User update(@RequestBody User userUpdate) {
         boolean result = userService.update(userUpdate);
         logger.debug(String.format("#UserController.update result:%s", result));
