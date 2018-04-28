@@ -8,29 +8,29 @@
         </encoder>
     </appender>
 
-    <appender name="FILE-BACKUP" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/Users/lucas/projects/spring-boot-demo/logFile.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- daily rollover -->
-            <fileNamePattern>/Users/lucas/projects/spring-boot-demo/logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
+    <!--<appender name="FILE-BACKUP" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+        <!--<file>/Users/lucas/projects/spring-boot-shane/logFile.log</file>-->
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+            <!--&lt;!&ndash; daily rollover &ndash;&gt;-->
+            <!--<fileNamePattern>/Users/lucas/projects/spring-boot-shane/logFile.%d{yyyy-MM-dd}.log</fileNamePattern>-->
 
-            <!-- keep 1 days' worth of history -->
-            <maxHistory>5</maxHistory>
-        </rollingPolicy>
+            <!--&lt;!&ndash; keep 1 days' worth of history &ndash;&gt;-->
+            <!--<maxHistory>5</maxHistory>-->
+        <!--</rollingPolicy>-->
 
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
-        </encoder>
-    </appender>
+        <!--<encoder>-->
+            <!--<pattern>%d{HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>-->
+        <!--</encoder>-->
+    <!--</appender>-->
 
     <!-- 滚动文件输出配置 -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/Users/lucas/projects/spring-boot-demo/logFile.log</file>
+        <file>/Users/lucas/projects/spring-boot-shane/logFile.log</file>
 
         <!-- 设置滚动策略 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--设置日志命名模式-->
-            <fileNamePattern>/Users/lucas/projects/spring-boot-demo/logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>/Users/lucas/projects/spring-boot-shane/logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
             <!--最多保留30天log-->
             <maxHistory>30</maxHistory>
         </rollingPolicy>
@@ -42,7 +42,8 @@
 
         <!-- 日志内容格式 -->
         <encoder>
-            <pattern>%d [%p] %-5level %logger - %msg%newline</pattern>
+            <!--<pattern>%d [%p] %-5level %logger - %msg%newline</pattern>-->
+            <pattern>%d{HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
         </encoder>
     </appender>
 
