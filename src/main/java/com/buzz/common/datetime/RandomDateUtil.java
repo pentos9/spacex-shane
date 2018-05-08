@@ -34,7 +34,6 @@ public class RandomDateUtil {
         long delta = begin + (long) (Math.random() * (end - begin));
 
         if (delta == begin || delta == end) {
-
             return random(begin, end);
         }
         return delta;
