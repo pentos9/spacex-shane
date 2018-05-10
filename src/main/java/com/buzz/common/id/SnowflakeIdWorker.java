@@ -1,5 +1,8 @@
 package com.buzz.common.id;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class SnowflakeIdWorker {
     // ==============================Fields===========================================
     /**
@@ -156,15 +159,19 @@ public class SnowflakeIdWorker {
 
     //==============================Test=============================================
 
+    private static final Logger logger = LoggerFactory.getLogger(SnowflakeIdWorker.class);
     /**
      * 测试
      */
     public static void main(String[] args) {
         SnowflakeIdWorker idWorker = new SnowflakeIdWorker(0, 0);
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 1000; i++) {
             long id = idWorker.nextId();
-            System.out.println(Long.toBinaryString(id));
-            System.out.println(id);
+            logger.info(Long.toBinaryString(id));
+            logger.info(String.format("%s", id));
         }
+        logger.info(Long.toBinaryString(-1L));
+        logger.info(Long.toBinaryString(1));
+        logger.info(Long.toBinaryString(1 << 31));
     }
 }
