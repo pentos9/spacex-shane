@@ -16,4 +16,10 @@ public class StringTest {
         logger.info("String#substring->{}", substring);
         Assert.assertTrue(substring.length() == (groupIds.length() - 1));
     }
+
+    @Test
+    public void testCharDelta() {
+        int delta = (int) 'a' - (int) 'A';
+        logger.info("delta={},hexString=0x{}", delta, Integer.toHexString(delta));
+    }
 }
