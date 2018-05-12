@@ -2,13 +2,19 @@ package com.buzz.common.cache;
 
 import com.buzz.common.spring.ApplicationContextUtil;
 import com.buzz.common.string.JsonUtils;
+import com.buzz.common.string.PinyinUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Component;
 
 public class SpringRedisUtils {
     private static final StringRedisTemplate redisTemplate = (StringRedisTemplate) ApplicationContextUtil.getBean("redisTemplate");
 
-    public static void set(final String key, Object value) {
+    public void set(final String key, Object value) {
         final String jsonValue = JsonUtils.toJson(value);
         redisTemplate.opsForValue().set(key, jsonValue);
     }
@@ -39,5 +45,22 @@ public class SpringRedisUtils {
 
     public static long increment(final String key, long expireTime) {
         return redisTemplate.opsForValue().increment(key, expireTime);
+    }
+
+    public static boolean setBit(String key, long offset) {
+        boolean result = redisTemplate.opsForValue().setBit(key, offset, true);
+        return result;
+    }
+
+    public static long bitCount(String key) {
+        Object bitcount = redisTemplate.execute(new RedisCallback<Object>() {
+            @Override
+            public Object doInRedis(RedisConnection redisConnection) throws DataAccessException {
+                Long count = redisConnection.bitCount(key.getBytes());
+                return count;
+            }
+        });
+
+        return (Long) bitcount;
     }
 }
