@@ -1,53 +1,39 @@
-<configuration>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+    <property name="LOG_PATH" value="/Users/lucas/projects/spring-boot-shane" />
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <!-- encoders are assigned the type
-     ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <!--<appender name="FILE-BACKUP" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
-        <!--<file>/Users/lucas/projects/spring-boot-shane/logFile.log</file>-->
-        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
-            <!--&lt;!&ndash; daily rollover &ndash;&gt;-->
-            <!--<fileNamePattern>/Users/lucas/projects/spring-boot-shane/logFile.%d{yyyy-MM-dd}.log</fileNamePattern>-->
-
-            <!--&lt;!&ndash; keep 1 days' worth of history &ndash;&gt;-->
-            <!--<maxHistory>5</maxHistory>-->
-        <!--</rollingPolicy>-->
-
-        <!--<encoder>-->
-            <!--<pattern>%d{HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>-->
-        <!--</encoder>-->
-    <!--</appender>-->
-
     <!-- 滚动文件输出配置 -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/Users/lucas/projects/spring-boot-shane/logFile.log</file>
+        <file>${LOG_PATH}/logFile.log</file>
 
         <!-- 设置滚动策略 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--设置日志命名模式-->
-            <fileNamePattern>/Users/lucas/projects/spring-boot-shane/logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${LOG_PATH}/logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
             <!--最多保留30天log-->
             <maxHistory>30</maxHistory>
         </rollingPolicy>
 
-        <!-- 超过150MB时，触发滚动策略 -->
+        <!-- 超过1024MB时，触发滚动策略 -->
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <maxFileSize>150</maxFileSize>
+            <maxFileSize>1024MB</maxFileSize>
         </triggeringPolicy>
 
         <!-- 日志内容格式 -->
         <encoder>
             <!--<pattern>%d [%p] %-5level %logger - %msg%newline</pattern>-->
-            <pattern>%d{HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+            <pattern> %d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <root level="info" additivity="false">
+    <root level="info">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
     </root>
