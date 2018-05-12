@@ -11,11 +11,11 @@ public class RateLimitUtils {
      *
      * @param key
      * @param expiredTime 到达限制次数上限之后，在规定时间内，不允许再次操作，返回false
-     * @param limit
+     * @param maxPermits
      * @return
      */
-    public static boolean isExceedRate(String key, long expiredTime, int limit) {
-        long num = SpringRedisUtils.increment(key, expiredTime);
-        return num >= limit;
+    public static boolean isExceedRate(String key, long expiredTime, int maxPermits) {
+        long total = SpringRedisUtils.increment(key, expiredTime);
+        return total >= maxPermits;
     }
 }
