@@ -18,14 +18,7 @@ public class TestController {
         LikeController likeController = (LikeController) ApplicationContextUtil.getBean("likeController");
         RedisTemplate redisTemplate = (RedisTemplate) ApplicationContextUtil.getBean("redisTemplate");
         ApplicationContextUtil applicationContextUtil = (ApplicationContextUtil) ApplicationContextUtil.getBean("applicationContextUtil");
-        System.out.println(logger.isDebugEnabled());
-        System.out.println(logger.isInfoEnabled());
-        System.out.println(logger.isWarnEnabled());
-        System.out.println(logger.isErrorEnabled());
-        logger.warn(String.format("likeController=%s , redisTemplate=%s ", JsonUtils.toJson(likeController), JsonUtils.toJson(applicationContextUtil)));
-        if (true) {
-            throw new RuntimeException("test exception");
-        }
+        logger.info(String.format("likeController=%s , redisTemplate=%s ", JsonUtils.toJson(likeController), JsonUtils.toJson(applicationContextUtil)));
         return "pong";
     }
 }
