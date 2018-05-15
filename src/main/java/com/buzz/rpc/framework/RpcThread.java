@@ -24,10 +24,10 @@ public class RpcThread extends Thread {
             RpcObject rpcObject = (RpcObject) objectInputStream.readObject();
 
             Object object = getObject(rpcObject.getClazz());
-            Object reObject = executeMethod(object, rpcObject.getMethodName(), rpcObject.getArgs());
+            Object resultObject = executeMethod(object, rpcObject.getMethodName(), rpcObject.getArgs());
 
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-            objectOutputStream.writeObject(reObject);
+            objectOutputStream.writeObject(resultObject);//服务端的相应结果返回
             objectOutputStream.flush();
 
         } catch (IOException e) {
@@ -46,15 +46,15 @@ public class RpcThread extends Thread {
 
     private Object executeMethod(Object object, String methodName, Object[] args) {
         Object objResult = null;
-        Class[] classes = new Class[args.length];
+        Class[] requestParameterTypes = new Class[args.length];
         for (int i = 0; i < args.length; i++) {
             Object arg = args[i];
-            classes[i] = arg.getClass();
+            requestParameterTypes[i] = arg.getClass();
         }
 
         try {
 
-            Method method = object.getClass().getMethod(methodName, classes);
+            Method method = object.getClass().getMethod(methodName, requestParameterTypes);
             objResult = method.invoke(object, args);
 
         } catch (InvocationTargetException e) {
