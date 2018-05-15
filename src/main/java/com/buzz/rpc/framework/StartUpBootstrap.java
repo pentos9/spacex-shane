@@ -24,7 +24,7 @@ public class StartUpBootstrap {
             while (true) {
                 logger.info("StartUpBootstrap starts successfully and it is listening now.");
                 Socket socket = serverSocket.accept();
-                new RpcThread(socket).start();
+                new Thread(new RpcRequestHandler(socket)).start();
             }
         } catch (IOException e) {
             e.printStackTrace();
