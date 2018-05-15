@@ -22,9 +22,9 @@ public class StartUpBootstrap {
             ServerSocket serverSocket = new ServerSocket(port);
 
             while (true) {
+                logger.info("StartUpBootstrap starts successfully and it is listening now.");
                 Socket socket = serverSocket.accept();
                 new RpcThread(socket).start();
-                logger.info("StartUpBootstrap starts now.");
             }
         } catch (IOException e) {
             e.printStackTrace();

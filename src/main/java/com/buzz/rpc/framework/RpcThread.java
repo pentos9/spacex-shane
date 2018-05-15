@@ -36,8 +36,13 @@ public class RpcThread extends Thread {
             e.printStackTrace();
         } finally {
             try {
-                objectInputStream.close();
-                objectOutputStream.close();
+                if (objectInputStream != null) {
+                    objectInputStream.close();
+                }
+
+                if (objectOutputStream != null) {
+                    objectOutputStream.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
