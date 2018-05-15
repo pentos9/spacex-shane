@@ -9,12 +9,12 @@ public class RpcProxy implements InvocationHandler, Serializable {
 
     private String ip;
     private int port;
-    private Class c;
+    private Class targetClass;
 
-    public RpcProxy(String ip, int port, Class c) {
+    public RpcProxy(String ip, int port, Class targetClass) {
         this.ip = ip;
         this.port = port;
-        this.c = c;
+        this.targetClass = targetClass;
     }
 
     @Override
@@ -22,21 +22,21 @@ public class RpcProxy implements InvocationHandler, Serializable {
         Object object = null;
 
         Socket socket = new Socket(ip, port);
-        RpcObject rpcObject = new RpcObject(c, method.getName(), args);
+        RpcObject rpcObject = new RpcObject(targetClass, method.getName(), args);
         ObjectOutputStream outputStream = null;
         ObjectInputStream inputStream = null;
 
 
         outputStream = new ObjectOutputStream(socket.getOutputStream());
         outputStream.writeObject(rpcObject);
-        outputStream.flush();
+        outputStream.flush();//request and handle return result
 
         inputStream = new ObjectInputStream(socket.getInputStream());
         object = inputStream.readObject();
 
         outputStream.close();
         inputStream.close();
-        
+
         return object;
     }
 }
