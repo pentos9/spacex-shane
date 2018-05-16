@@ -25,7 +25,7 @@ public class RpcRequestHandler implements Runnable {
             objectInputStream = new ObjectInputStream(socket.getInputStream());
             RpcObject rpcRequestObject = (RpcObject) objectInputStream.readObject();
 
-            Object targetObject = getObject(rpcRequestObject.getClazz());
+            Object targetObject = getTargetObject(rpcRequestObject.getClazz());
             Object resultObject = executeMethod(targetObject, rpcRequestObject.getMethodName(), rpcRequestObject.getArgs());
 
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -78,11 +78,11 @@ public class RpcRequestHandler implements Runnable {
         return objResult;
     }
 
-    private Object getObject(Class c) {
+    private Object getTargetObject(Class targetClass) {
         Object object = null;
 
         try {
-            object = ConfMonitor.conf.get(c.getName()).newInstance();
+            object = ConfMonitor.conf.get(targetClass.getName()).newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
