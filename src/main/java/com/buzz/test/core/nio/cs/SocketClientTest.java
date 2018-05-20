@@ -1,4 +1,4 @@
-package com.buzz.test.core.nio;
+package com.buzz.test.core.nio.cs;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

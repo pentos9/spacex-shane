@@ -1,7 +1,6 @@
-package com.buzz.test.core.nio;
+package com.buzz.test.core.nio.cs;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
@@ -26,6 +25,7 @@ public class ServerSocketTest {
         this.selector = Selector.open();
         ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
         serverSocketChannel.configureBlocking(false);
+        serverSocketChannel.socket().bind(listenAddress);
         serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
         System.out.println("Server starts now...");
 
@@ -53,11 +53,12 @@ public class ServerSocketTest {
     private void accept(SelectionKey key) throws IOException {
         ServerSocketChannel serverSocketChannel = (ServerSocketChannel) key.channel();
         SocketChannel channel = serverSocketChannel.accept();
+        channel.configureBlocking(false);
         Socket socket = channel.socket();
         SocketAddress remoteAddress = socket.getRemoteSocketAddress();
         System.out.println(remoteAddress);
         dateMap.put(channel, new ArrayList<>());
-        channel.register(this.selector, SelectionKey.OP_ACCEPT);
+        channel.register(this.selector, SelectionKey.OP_READ);
     }
 
     private void read(SelectionKey key) throws IOException {
