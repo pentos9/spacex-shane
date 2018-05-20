@@ -9,6 +9,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.Charset;
 import java.util.*;
 
 public class ServerSocketTest {
@@ -43,6 +44,8 @@ public class ServerSocketTest {
                     this.accept(key);
                 } else if (key.isReadable()) {
                     this.read(key);
+                } else if (key.isWritable()) {
+                    this.write(key);
                 }
             }
         }
@@ -56,7 +59,7 @@ public class ServerSocketTest {
         channel.configureBlocking(false);
         Socket socket = channel.socket();
         SocketAddress remoteAddress = socket.getRemoteSocketAddress();
-        System.out.println(remoteAddress);
+        System.out.println("Received from remoteAddress:" + remoteAddress);
         dateMap.put(channel, new ArrayList<>());
         channel.register(this.selector, SelectionKey.OP_READ);
     }
@@ -70,7 +73,7 @@ public class ServerSocketTest {
             this.dateMap.remove(channel);
             Socket socket = channel.socket();
             SocketAddress remoteAddress = socket.getRemoteSocketAddress();
-            System.out.println("Connected :" + remoteAddress);
+            System.out.println("Connected closed by client :" + remoteAddress);
             channel.close();
             key.cancel();
             return;
@@ -79,6 +82,17 @@ public class ServerSocketTest {
         byte[] data = new byte[numRead];
         System.arraycopy(buffer.array(), 0, data, 0, numRead);
         System.out.println("Got:" + new String(data));
+    }
+
+    private void write(SelectionKey key) throws IOException {
+        SocketChannel channel = (SocketChannel) key.channel();
+        ByteBuffer buffer = ByteBuffer.allocate(1024);
+        String message = new Date().toString();
+        buffer.put(message.getBytes(Charset.forName("utf-8")));
+        buffer.flip();
+        while (buffer.hasRemaining()) {
+            channel.write(buffer);
+        }
     }
 
     public static void main(String[] args) {
