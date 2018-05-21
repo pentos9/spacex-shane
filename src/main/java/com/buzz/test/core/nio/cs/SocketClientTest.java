@@ -1,4 +1,4 @@
-package com.buzz.test.core.nio;
+package com.buzz.test.core.nio.cs;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -12,8 +12,8 @@ public class SocketClientTest {
         System.out.println("Client starts...");
         String threadName = Thread.currentThread().getName();
         String[] messages = new String[]{threadName + ": test1", threadName + ": test2", threadName + ": test3"};
-        for (int i = 0; i < i; i++) {
-            byte[] message = new String(messages[i]).getBytes();
+        for (int i = 0; i < 3; i++) {
+            byte[] message = messages[i].getBytes();
             ByteBuffer buffer = ByteBuffer.wrap(message);
             client.write(buffer);
             System.out.println(messages[i]);

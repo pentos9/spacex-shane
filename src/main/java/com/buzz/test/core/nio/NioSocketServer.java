@@ -47,7 +47,7 @@ public class NioSocketServer {
                     SocketChannel sc = ssc.accept();
                     logger.info("client server address: ip:{},port{}", sc.getRemoteAddress(), sc.socket().getPort());
                     sc.configureBlocking(false);
-                    sc.register(selector, SelectionKey.OP_ACCEPT);
+                    sc.register(selector, SelectionKey.OP_READ);
                 } else if (selectionKey.isReadable()) {
                     receive(selectionKey);
                 }
@@ -67,7 +67,7 @@ public class NioSocketServer {
                 int byteRead = socketChannel.read(readBuffer);
                 if (byteRead > 0) {
                     readBuffer.flip();
-                    byteBuffer.put(byteBuffer);
+                    byteBuffer.put(readBuffer);
                     readBuffer.clear();
                 } else {
                     break;
@@ -75,9 +75,9 @@ public class NioSocketServer {
 
                 byteBuffer.flip();
                 String request = new String(byteBuffer.array());
-                logger.info("receive data:{}", request);
-                String response = "hello world";
-                ByteBuffer writeBuffer = ByteBuffer.wrap(request.getBytes());
+                logger.info("receive data:{}", request.trim());
+                String response = "hello world,this is message from server!";
+                ByteBuffer writeBuffer = ByteBuffer.wrap(response.getBytes());
                 socketChannel.write(writeBuffer);
             } catch (IOException e) {
                 e.printStackTrace();
