@@ -3,12 +3,17 @@ package com.buzz.test.core.nio.cs;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 
 public class SocketClientTest {
     public void startClient() throws IOException, InterruptedException {
         InetSocketAddress inetSocketAddress = new InetSocketAddress("localhost", 8090);
         SocketChannel client = SocketChannel.open(inetSocketAddress);
+        client.configureBlocking(false);
+        Selector selector = Selector.open();
+        client.register(selector, SelectionKey.OP_CONNECT);
         System.out.println("Client starts...");
         String threadName = Thread.currentThread().getName();
         String[] messages = new String[]{threadName + ": test1", threadName + ": test2", threadName + ": test3"};
