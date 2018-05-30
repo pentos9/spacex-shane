@@ -34,15 +34,13 @@ public class StrictRedisLock {
     /**
      * 释放分布式锁
      *
-     * @param jedis     Redis客户端
-     * @param lockKey   锁
-     * @param requestId 请求标识
+     * @param lockKey 锁
      * @return 是否释放成功
      */
-    public static boolean releaseDistributedLock(Jedis jedis, String lockKey, String requestId) {
+    public boolean releaseDistributedLock(String lockKey) {
 
         String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
-        Object result = jedis.eval(script, Collections.singletonList(lockKey), Collections.singletonList(requestId));
+        Object result = jedis.eval(script, Collections.singletonList(lockKey), Collections.singletonList(DEFAULT_VALUE));
 
         if (RELEASE_SUCCESS.equals(result)) {
             return true;
