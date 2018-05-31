@@ -53,11 +53,10 @@ public class RetryUtilsTest {
             List<String> results = FluentIterable.from(cars).filter(byName).transform(Functions.toStringFunction()).toList();
             System.out.println(results);
 
-            List<Integer> values = Lists.newArrayList(12, 3, 4, 5, null, 231, null);
-            //Iterables filtered = Iterables.filter(, Predicates.notNull());
-
+            java.util.function.Predicate<Integer> notNull = object -> object != null;
             java.util.function.Predicate<Integer> byNumber = number -> number <= 100;
-            //List<Integer>
+            List<Integer> numbers = Lists.newArrayList(1, 22, 63, 4, null, 15, 1000, 8987);
+            numbers.stream().filter(notNull).filter(byNumber).forEach(System.out::println);
 
         });
 
