@@ -23,7 +23,7 @@
 
         <!-- 超过1024MB时，触发滚动策略 -->
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <maxFileSize>128MB</maxFileSize>
+            <maxFileSize>50MB</maxFileSize>
         </triggeringPolicy>
 
         <!-- 日志内容格式 -->
