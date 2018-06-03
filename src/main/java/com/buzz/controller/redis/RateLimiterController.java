@@ -42,22 +42,21 @@ public class RateLimiterController {
     @RequestMapping("/limit")
     public boolean flowControl(String uid, int maxTimes) {
         Preconditions.checkArgument(StringUtils.isNotBlank(uid), "uid不能为空");
-        ScheduledExecutorService schedule = Executors.newScheduledThreadPool(100);
 
         long max = 10;
 
         String key = "shane:limit:max:" + uid;
-        ValueOperations valueOperations = stringRedisTemplate.opsForValue();
-        long incr = valueOperations.increment(key, 1);
+        String value = stringRedisTemplate.opsForValue().get(key);
 
-        if (stringRedisTemplate.getExpire(key) == -1) {
+        if (StringUtils.isNotBlank(value) && Long.parseLong(value) > max) {
+            logger.warn("抱歉，你已近达到最大调用次数");
+            return false;
+        } else {
+            long incr = stringRedisTemplate.opsForValue().increment(key, 1);
             stringRedisTemplate.expire(key, 1, TimeUnit.MINUTES);
         }
 
-        if (incr > max) {
-            logger.warn("抱歉，你已近达到最大调用次数");
-            return false;
-        }
+        logger.info("call and execute target api now...");
 
         return true;
     }
