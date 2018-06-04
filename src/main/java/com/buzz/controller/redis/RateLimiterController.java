@@ -39,7 +39,7 @@ public class RateLimiterController {
         return result;
     }
 
-    @RequestMapping("/limit")
+    @RequestMapping("/flowControl")
     public boolean flowControl(String uid, int maxTimes) {
         Preconditions.checkArgument(StringUtils.isNotBlank(uid), "uid不能为空");
 
