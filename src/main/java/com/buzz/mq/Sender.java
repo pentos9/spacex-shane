@@ -26,7 +26,7 @@ public class Sender {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    @Scheduled(fixedDelay = 1000, initialDelay = 500)
+    //@Scheduled(fixedDelay = 1000, initialDelay = 500)
     public void send() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String message = dateFormat.format(new Date()) + " - Topic Transfer";
