@@ -11,5 +11,6 @@ public class NullTest {
         String json = "{\"type\":\"worksDetail\",\"detailFlag\":\"0\",\"workId\":\"231312312\"}";
         Map<String, String> result = JsonUtil.fromJson("{\"type\":\"worksDetail\",\"detailFlag\":\"0\",\"workId\":\"231312312\"}", Map.class);
         System.out.println(result);
+        System.out.println(" abcd ".trim());
     }
 }
