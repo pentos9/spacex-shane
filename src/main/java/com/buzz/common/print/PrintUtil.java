@@ -21,7 +21,11 @@ public class PrintUtil {
         err.println(text);
     }
 
-    public static void print(String text) {
+    public static void print(Object text) {
+        out.println(text);
+    }
+
+    public static void println(Object text) {
         out.println(text);
     }
 
