@@ -17,7 +17,23 @@ import java.util.Map;
 
 public class QRCodeTest {
     public static void main(String[] args) {
-        run();
+        testQRCode();
+    }
+
+    public static void testQRCode() {
+
+        String content = "https://www.instagram.com";
+        String logoUri = "avarta.png";
+        String outputFileUri = "instagram-homepage-qr-code.png";
+        String fileType = "png";
+
+        try {
+            new QRCodeFactory().createQRCode(content, fileType, outputFileUri, logoUri, 430);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void run() {
