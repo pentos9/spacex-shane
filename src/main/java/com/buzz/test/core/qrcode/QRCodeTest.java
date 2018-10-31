@@ -78,9 +78,4 @@ public class QRCodeTest {
         }
     }
 
-    public static void createQRCode(String test) {
-
-    }
-
-
 }
